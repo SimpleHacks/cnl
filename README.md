@@ -1,108 +1,46 @@
 # Compositional Numeric Library
 
-[![Test](https://github.com/johnmcfarlane/cnl/workflows/Test/badge.svg)](https://github.com/johnmcfarlane/cnl/actions?query=workflow:Test+branch:main)
-[![Join the chat at https://gitter.im/cppcnl/community](https://badges.gitter.im/cppcnl/community.svg)](https://gitter.im/cppcnl/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[ ![Download](https://api.bintray.com/packages/johnmcfarlane/cnl/cnl%3Ajohnmcfarlane/images/download.svg) ](https://bintray.com/johnmcfarlane/cnl/cnl%3Ajohnmcfarlane/_latestVersion)
+THIS DEPOT IS CURRENTLY IDENTICAL TO THE PARENT CNL v1.1.7.
 
 The Compositional Numeric Library (CNL) is a C++ library of fixed-precision numeric classes which enhance integers to
 deliver safer, simpler, cheaper arithmetic types.
-Documentation can be found [here](http://johnmcfarlane.github.io/cnl/).
+
+This is a fork of [v1.x](https://github.com/johnmcfarlane/cnl/tree/v1.x).
+This fork will have changes to improve usability with Arduino build environments.
+Specifically, this fork will remain on v1.x (which requires only C++11).
+This fork will also modify CNL to use Arduino-style `String`, rather than `std::string`,
+as Arduino environments (and embedded generally) do not often have full support for
+the `std` namespace.
+
+Documentation on CNL can be found [here](http://johnmcfarlane.github.io/cnl/).
 
 ## Requirements
 
-CNL requires a C++11-compatible tool chain and is tested on the following systems:
+CNL v1.x requires a C++11-compatible tool chain.
 
-### Linux
-
-Tested:
-
-- GCC 5 - 10 / Clang 5 - 11
-- [CMake](https://cmake.org/download/) 3.5.1
-
-### OS X
-
-Tested:
-
-- GCC 10
-- [CMake](https://cmake.org/download/) 3.5.1
-
-### Windows
-
-Tested:
-
-- Visual Studio 2019 Version 16.7
-- [CMake](https://cmake.org/download/) 3.8.0
+NOTE: The Arduino-focused builds have not been built or tested yet.
 
 ## Instructions
 
-### Download
+### PlatformIO
 
-The library is [hosted](https://github.com/johnmcfarlane/cnl) on GitHub:
+It is expected that use with PlatformIO will be possible by
+linking directly to this depot as a library, specifying the tag
+for the version you wish to use.  For example, the project configuration
+might include:
 
-```shell
-git clone https://github.com/johnmcfarlane/cnl.git
-cd cnl
+```ini
+lib_deps =
+    https://github.com/SimpleHacks/cnl.git#v1.x
 ```
 
-### Build
+In fact, this appears to work today, although only when various
+string functions in `std::` are available (or, as a non-recommended
+hack, where implementations are provided by the user).
 
-The CNL library is comprised of headers found in the [src](src) directory.
-CMake scripts are provided.
+### Arduino
 
-To build and install CNL on your system:
-
-```sh
-mkdir build && cd build
-cmake ..
-cmake --build . --target install
-```
-
-### Test
-
-The test suite uses CMake and depends on Google Test and Google Benchmark.
-Optional integration tests use Boost.Multiprecision and Boost.SIMD.
-
-1. Conan can be used to pull in essential dependencies:
-
-   ```shell
-   conan profile new --detect --force default
-   conan profile update settings.compiler.libcxx=libstdc++11 default
-   conan install --build=missing ..
-   ```
-
-2. Configure the project for development
-
-   ```shell
-   cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PROJECT_cnl_INCLUDE:FILEPATH="$(pwd)"/conan_paths.cmake ..
-   ```
-
-3. Build tests:
-
-   ```sh
-   cmake --build . --target test-all
-   ```
-
-4. Run tests:
-
-   ```sh
-   ctest -R test-unit
-   ```
-
-5. Run benchmarks:
-
-   ```sh
-   ctest -R test-benchmark
-   ```
-
-### Additional build system generation options:
-
-1. To describe CNL build options:
-
-   `cmake -LH ..`
-
-2. Then to apply an option, e.g. to disabled exceptions:
-
-   `cmake -DCNL_EXCEPTIONS=OFF ..`
+TBD ... unsure if reasonable to support due to CMake requirement?
 
 ### Integration
 
@@ -116,33 +54,3 @@ Add this to your system header list and include, e.g.:
 // or to include all CNL types:
 #include <cnl/all.h>
 ```
-
-## Example Projects
-
-Examples of projects using CNL:
-
-* [CDSP](https://github.com/hbe72/cdsp) - Compositional DSP Library for 
-  C++;
-* [BrewBlox firmware](https://github.com/BrewBlox/brewblox-firmware) - firmware for a brewery controller
-* [cnl_example](https://github.com/johnmcfarlane/cnl_example) - minimal
-  CMake-based project which uses CNL as a dependency.
-
-## Further Reading
-
-- CNL [documentation](http://johnmcfarlane.github.io/cnl/)
-- CppCon 2017 [presentation](https://youtu.be/GEfmV3Xcuok)
-- Embedded Artistry [article](https://embeddedartistry.com/blog/2017/8/25/c11-fixed-point-arithemetic-library)
-- ISO C++ papers:
-  - [P0037](http://wg21.link/p0037) - Fixed-Point Real Numbers
-  - [P0554](http://wg21.link/p0554) - Composition of Arithmetic Types
-  - [P0827](http://wg21.link/p0827) - General-Purpose Constant Value Type
-  - [P0828](http://wg21.link/p0828) - Elastic Integers
-  - [P1050](http://wg21.link/p1050) - Fractional Numeric Type
-
-## Contact Information
-
-All feedback greatly appreciated.
-
-- [CNL Issues](https://github.com/johnmcfarlane/cnl/issues)
-- [SG14 forum](https://groups.google.com/a/isocpp.org/forum/#!forum/sg14)
-- [cnl@john.mcfarlane.name](mailto:cnl@john.mcfarlane.name)
